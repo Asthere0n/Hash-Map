@@ -1,8 +1,10 @@
+import {ListNode, LinkedList} from "../utilities/Linked-List"
+
 class HashMap {
     constructor(loadFactor, capacity = 16) {
         this.loadFactor = loadFactor,
         this.capacity = capacity,
-        this.bucketList = []
+        this.bucketList = new Array(capacity).fill(null).map(() => new LinkedList());
      }
 
     hash(key) {
@@ -18,16 +20,23 @@ class HashMap {
     set(key, value){
         // Introduces a new value in a key bucket, if the key already exists it will overwrite.
         const hashKey = this.hash(key)
-        const newBucket = {head: {key : value}}
+        const bucket = this.bucketList[hashKey]
         
         // When hash-key is the same but the keys are different we have a collision, we solve it using a linked list.
-        if (this.bucketList[hashKey] == undefined || this.bucketList[hashKey][0] === key){
-            this.bucketList[hashKey] = newBucket
-        } else {
-            this.bucketList[hashKey][2] = key
-            this.bucketList[hashKey].push(newBucket)
+        let currentNode = bucket.head
+        while(currentNode){
+            if (currentNode.key === key){
+                currentNode.value = value
+                return;
+            } else {
+                currentNode = currentNode.next
+            }
         }
+        // If the key doesn't exist yet, add a new node to list
+        bucket.append(new ListNode(key, value))
     }
+
+
 }
 
 export default HashMap

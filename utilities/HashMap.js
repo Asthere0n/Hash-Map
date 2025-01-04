@@ -1,4 +1,4 @@
-import {ListNode, LinkedList} from "../utilities/Linked-List"
+import {ListNode, LinkedList} from "../utilities/Linked-List.js"
 
 class HashMap {
     constructor(loadFactor, capacity = 16) {
